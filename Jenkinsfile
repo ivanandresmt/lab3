@@ -1,6 +1,14 @@
 // 2. JenkinsFile
 pipeline {
     agent any
+
+    tools {
+        nodejs 'node18'  
+    }
+
+
+
+
     
     environment {
         // IDs de credenciales configurados en Jenkins
