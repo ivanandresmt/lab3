@@ -1,0 +1,78 @@
+# 3. kubernetes.yaml
+
+# a. Creación del Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: imeneses 
+---
+# c. ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: imeneses
+data:
+  USERNAME: "ivanmeneses"
+---
+# d. Secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+  namespace: imeneses
+type: Opaque
+data:
+  # API_KEY debe estar en base64. Ej: echo -n "secret123" | base64
+  API_KEY: c2VjcmV0MTIz 
+---
+# b. Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-app
+  namespace: imeneses
+spec:
+  replicas: 3 # Requerimiento de 3 réplicas
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-container
+        # Esta imagen será actualizada por el pipeline, ponemos una placeholder o latest
+        image: ghcr.io/ivanandresmt/lab3:latest 
+        ports:
+        - containerPort: 3000
+        env:
+        # Uso de variables de entorno desde ConfigMap y Secret
+        - name: USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: USERNAME
+        - name: API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: API_KEY
+      # IMPORTANTE: Si usas GitHub Packages privado, necesitas un imagePullSecret aquí
+---
+# b. Servicio
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: ivanmeneses
+spec:
+  type: LoadBalancer # O NodePort si estás en Minikube sin tunel
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
