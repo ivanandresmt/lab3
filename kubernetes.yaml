@@ -13,7 +13,7 @@ metadata:
   name: app-config
   namespace: imeneses
 data:
-  USERNAME: "ivanmeneses"
+  USERNAME: "imeneses"
 ---
 # d. Secret
 apiVersion: v1
@@ -67,7 +67,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend-service
-  namespace: ivanmeneses
+  namespace: imeneses
 spec:
   type: LoadBalancer # O NodePort si estás en Minikube sin tunel
   selector:
