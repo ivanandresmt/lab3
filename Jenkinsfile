@@ -20,7 +20,7 @@ pipeline {
         GITHUB_IMAGE    = "ghcr.io/ivanandresmt/lab3"
         
         // Namespace de K8s
-        K8S_NAMESPACE   = "ivanmeneses" 
+        K8S_NAMESPACE   = "imeneses" 
     }
     
     stages {
