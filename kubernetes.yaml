@@ -42,7 +42,7 @@ spec:
       labels:
         app: backend
     spec:
-      imagePullSecret:
+      imagePullSecrets:
       - name: ghcr-secret
       containers:
       - name: backend-container
