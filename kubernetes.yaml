@@ -42,6 +42,8 @@ spec:
       labels:
         app: backend
     spec:
+      imagePullSecret:
+      - name: ghcr-secret
       containers:
       - name: backend-container
         # Esta imagen será actualizada por el pipeline, ponemos una placeholder o latest
